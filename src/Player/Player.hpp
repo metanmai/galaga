@@ -15,13 +15,15 @@ class Player
 private:
 	Sprite sprite{};
 	Texture texture{};
+	float mvmtspeed{};
 
 public:
 	Player();
-	virtual ~Player();
+	~Player() = default;
 
 	// Functions
-	void update();
+	void move(float xdir, float ydir, float deltaTime);
+	void update(float deltaTime);
 	void render(RenderTarget &target);
 };
 

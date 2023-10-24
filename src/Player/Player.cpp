@@ -8,34 +8,49 @@
 Player::Player()
 {
 	// Textures should be loaded first.
-	auto response = this->texture.loadFromFile("/Users/metanmai/Code/C++/Projects/galaga/images/spaceship.png");
+	auto response = texture.loadFromFile("/Users/metanmai/Code/C++/Projects/galaga/images/spaceship.png");
 
 	if(!response)
 		std::cout << "Unable to load player textures!" << std::endl;
 
-	this->sprite.setTexture(this->texture);
+	sprite.setTexture(texture);
+	sprite.setScale(0.1f, 0.1f);
+	sprite.setPosition(400 - sprite.getGlobalBounds().width / 2,600);
+
+	mvmtspeed = 200;
 }
 
-Player::~Player()
+void Player::update(float deltaTime)
 {
+	if(Keyboard::isKeyPressed(Keyboard::W)) {
+		std::cout << "UP" << std::endl;
+		move(0, -1, deltaTime);
+	}
 
-}
+	if(Keyboard::isKeyPressed(Keyboard::A)) {
+		move(-1, 0, deltaTime);
+		std::cout << "LEFT" << std::endl;
+	}
 
-void Player::update()
-{
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) and this->sprite.getPosition().x > 0)
-            this->sprite.move(-0.25f, 0.0f);
+	if(Keyboard::isKeyPressed(Keyboard::S)) {
+		std::cout << "DOWN" << std::endl;
+		move(0, 1, deltaTime);
+	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) and this->sprite.getPosition().x + this->sprite.getGlobalBounds().width < 800)
-		this->sprite.move(0.25f, 0.0f);
+	if(Keyboard::isKeyPressed(Keyboard::D)) {
+		std::cout << "RIGHT" << std::endl;
+		move(1, 0, deltaTime);
+	}
 }
 
 void Player::render(RenderTarget &target)
 {
-	this->sprite.setScale(0.1f, 0.1f);
+	target.draw(sprite);
+}
 
-	this->sprite.setPosition(400 - this->sprite.getGlobalBounds().width / 2,
-							 600);
-
-	target.draw(this->sprite);
+void Player::move(const float xdir, const float ydir, const float deltaTime)
+{
+	sprite.move(mvmtspeed * deltaTime * xdir, mvmtspeed * deltaTime * ydir);
+	auto spritePosition = sprite.getPosition();
+	std::cout << "Sprite Position: (" << spritePosition.x << ", " << spritePosition.y << ")" << std::endl;
 }

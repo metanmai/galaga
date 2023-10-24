@@ -12,6 +12,7 @@ class Game
 private:
 	RenderWindow *window;
 	Player *player;
+	Clock *clock;
 
 public:
 	Game();
@@ -19,7 +20,7 @@ public:
 
 	// Function
 	void run();
-	void update();
+	void update(float deltaTime);
 	void render();
 };
 
